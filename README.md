@@ -8,8 +8,8 @@ This project aims to build docker images with unattended upgrades, i.e. with fix
 ## The problem with docker build cache
 
 Docker build cache is great, it help to build docker images faster and avoid users to re-download layers upon rebuilds. You *want* docker build cache features.
-But it also have a terrible drawback of ignoring unattended security upgrades coming for underlying package manager os OSes.
-Most of the images available in registries have pending security updates...
+But it also have a terrible drawback of ignoring unattended security upgrades coming from underlying OS package manager.
+Most of the images available in registries have pending security updates :/
 
 ## Solution
 
@@ -49,12 +49,21 @@ Currently, `duuh` support Alpine (apk), Debian (apt), and Centos (yum) based dis
     Step 1/3 : FROM python:alpine
      ---> dca462abc566
     Step 2/3 : LABEL duuh.upgrades="busybox-1.30.1-r3 x86_64 {busybox} (GPL-2.0) [upgradable from: busybox-1.30.1-r2]ssl_client-1.30.1-r3 x86_64 {busybox} (GPL-2.0) [upgradable from: ssl_client-1.30.1-r2]"
-     ---> Using cache
-     ---> 6cc971d47933
+     ---> Running in afedc777bd90
+    Removing intermediate container afedc777bd90
+     ---> 5f92a9fce90b
     Step 3/3 : RUN apk --no-cache upgrade
-     ---> Using cache
-     ---> 2c6763406938
-    Successfully built 2c6763406938
+     ---> Running in 225bf2ae2720
+    fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/main/x86_64/APKINDEX.tar.gz
+    fetch http://dl-cdn.alpinelinux.org/alpine/v3.10/community/x86_64/APKINDEX.tar.gz
+    (1/2) Upgrading busybox (1.30.1-r2 -> 1.30.1-r3)
+    Executing busybox-1.30.1-r3.post-upgrade
+    (2/2) Upgrading ssl_client (1.30.1-r2 -> 1.30.1-r3)
+    Executing busybox-1.30.1-r3.trigger
+    OK: 18 MiB in 35 packages
+    Removing intermediate container 225bf2ae2720
+     ---> b6638f090d74
+    Successfully built b6638f090d74
     Successfully tagged python:alpine
 
 	$ duuh python:alpine
