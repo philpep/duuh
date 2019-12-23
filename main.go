@@ -95,7 +95,7 @@ func getUnattendedUpgrades() *unattendedUpgrade {
 
 func imageGetUnattendedUpgrade(image string) *unattendedUpgrade {
 	uu := &unattendedUpgrade{}
-	self, err := filepath.Abs(os.Args[0])
+	self, err := os.Executable()
 	if err != nil {
 		log.Fatal(err)
 	}
