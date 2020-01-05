@@ -152,7 +152,9 @@ func main() {
 	var image string
 	var build bool
 	var check bool
+	var pull bool
 	flag.BoolVar(&build, "build", false, "Build image with unattended upgrades")
+	flag.BoolVar(&pull, "pull", false, "force pull image from registry before processing")
 	flag.BoolVar(&check, "check", false, "check current container and output json unattended upgrades (internal use)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of duuh: duuh <docker image>\n")
@@ -175,6 +177,9 @@ func main() {
 		}
 		fmt.Print(string(uuJSON))
 	} else {
+		if pull {
+			checkCall("docker", "pull", image)
+		}
 		uu := imageGetUnattendedUpgrade(image)
 		if len(uu.Upgrades) > 0 {
 			if build {

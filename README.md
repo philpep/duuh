@@ -21,6 +21,9 @@ Most of the images available in registries have pending security updates :/
             Build image with unattended upgrades
       -check
             check current container and output json unattended upgrades (internal use)
+      -pull
+            force pull image from registry before processing
+
 
 `duuh` will exit with status 2 if pending updates are available.
 
