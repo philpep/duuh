@@ -19,6 +19,8 @@ Most of the images available in registries have pending security updates :/
     Usage of duuh: duuh <docker image>
       -build
             Build image with unattended upgrades
+      -check
+            check current container and output json unattended upgrades (internal use)
 
 `duuh` will exit with status 2 if pending updates are available.
 

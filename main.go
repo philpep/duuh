@@ -153,7 +153,7 @@ func main() {
 	var build bool
 	var check bool
 	flag.BoolVar(&build, "build", false, "Build image with unattended upgrades")
-	flag.BoolVar(&check, "check", false, "check current container and output json unattended upgrades")
+	flag.BoolVar(&check, "check", false, "check current container and output json unattended upgrades (internal use)")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of duuh: duuh <docker image>\n")
 		flag.PrintDefaults()
