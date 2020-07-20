@@ -3,4 +3,17 @@ go: "1.13"
 env:
   # actually required with go 1.12 because travis set default to "auto"
   - GO111MODULE=on
-script: make test
+script:
+  - make test
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o duuh-linux-amd64
+  - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -o duuh-darwin-amd64
+deploy:
+  provider: releases
+  api_key:
+    secure: m3EhpPetR23A12DUYxaoMVZ/kA1VUGf5CQdxTJBU0dxLRigPERy7t5K4Fzly5LavgQ7Y3nXdFAXIlR8n+dW/VMTD/2I/EC9kRCGM/2R2ujOwQJBIRI93j7l4cFUqvG/iM2wSFxb3GfyAEOScSQCyHnEiAG//zv8R7vAfWYFNIp8i+0CXdsPBbaIeqSN6M5F/jG/nKEdudSeo/mUZ0rm9X6/VPqVzS/WcWsM982I9tn6xlB3GMFYOsRIuBrq05pCnLaVmIqEXr8sCC/Ap/Bcn48k7uAsYazv3x6gTdwyIL71QgqqjFs3CiHg/2zuIvU/WpccL/qZ52gZghf/Yaxq/3QjAzZvqQ+fL4B7xu2wLgGcVlDaSz4pLg2TRjkBFglZUBBz2JbfEi9ThK932ZClW9kmpkJ5v6SB6KDt2MgQEIQXzhzYW4MluPf4sy9Y/9NVpuox37FxVtMOvrKq3YDcjPoQR+MSqTFgpgt9IflOnTG6zqV1q+KTp07PBAMIEYIJlOm9KO6dBGxnQMVnez2JT3oa0oFKv2aDMSz124b6rIzQ6uB2khpLu7AC5e980v0mGfqzQsXdAWfaZNk7fY2h5Q1u+mkV12tQEQeTo6BRlWqoKQHiwjJBTaed6qQ9xeqtFrXbspn5g2wsaYDtZBt620uT5TnoKf9dxqRAzthQkw/4=
+  skip_cleanup: true
+  file:
+    - duuh-linux-amd64
+    - duuh-darwin-amd64
+  on:
+    tags: true

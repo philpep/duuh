@@ -83,6 +83,10 @@ Currently, `duuh` support Alpine (apk), Debian (apt), and Centos (yum) based dis
 
 ## Install and run
 
+## From a pre-built binary
+
+Check [releases page](https://github.com/philpep/duuh/releases).
+
 ### From the command line
 
 Just download and build the code:
