@@ -37,7 +37,7 @@ func checkCall(command string, args ...string) {
 
 var alpinePackageRegexp = regexp.MustCompile("^(.*) \\[upgradable from: (.*)$")
 var debianPackageRegexp = alpinePackageRegexp
-var centosPackageRegexp = regexp.MustCompile("^(.*) (updates|base)$")
+var centosPackageRegexp = regexp.MustCompile("^([^\\s]+)\\s+.*$")
 
 type unattendedUpgrade struct {
 	OsType   string
@@ -69,9 +69,10 @@ func getUnattendedUpgrades() *unattendedUpgrade {
 			}
 		}
 	}
-	if _, err := os.Stat("/usr/bin/yum"); !os.IsNotExist(err) {
+	if _, err := os.Stat("/usr/bin/dnf"); !os.IsNotExist(err) {
 		uu.OsType = "centos"
-		cmd := exec.Command("/usr/bin/yum", "check-update")
+		checkCall("/usr/bin/dnf", "makecache", "-y")
+		cmd := exec.Command("/usr/bin/dnf", "check-update", "--cacheonly")
 		cmd.Stderr = os.Stderr
 		stdout, err := cmd.Output()
 		if exiterr, ok := err.(*exec.ExitError); ok {
@@ -122,7 +123,7 @@ func buildUnattendedUpgradeImage(image string, ostype string, label string) erro
 	case "debian":
 		dockerfile += "RUN apt-get update && apt-get -y dist-upgrade && rm -rf /var/lib/apt/lists/*\n"
 	case "centos":
-		dockerfile += "RUN yum -y update"
+		dockerfile += "RUN dnf update -y --refresh\n"
 	default:
 		return fmt.Errorf("unhandled ostype %s", ostype)
 	}
